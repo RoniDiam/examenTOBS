@@ -77,12 +77,11 @@
              ]);
 
             $json = curl_exec($curl);
-
+            curl_close($curl);
             // Convierto String en JSON a variable de PHP
             $juegos = json_decode($json, true);
             set_time_limit(1000);
 
-            curl_close($curl);
         ?>
  
         <ul>
@@ -113,6 +112,15 @@
                 fclose($out);
             }
 
+        
+        $server = "localhost";
+        $user = "root";
+        $pass = "";
+        $db = "juegos";
+
+        $conexion = mysqli_connect($server, $user, $pass,$db) or die("No se pudo conectar con de la base de datos");
+
+
         foreach ($juegos as $value) 
         {
                 $cadena = $value['title'];
@@ -122,11 +130,10 @@
                     <td>
                 <?php 
                     echo($cadena);
-                    $image_name = time()."_foto".".jpg";
-                    /*
-
-                    save_image($imagenes, $image_name); 
+                    $image_name = "imagenes/".time()."_foto".".jpg";
                     
+                    save_image($imagenes, $image_name); 
+
                     // Get new dimensions
                     list($width, $height) = getimagesize($image_name);
                     $newWidth = $width *  0.5;
@@ -138,25 +145,18 @@
                     
                     imagefilter($newImageGd, IMG_FILTER_GRAYSCALE);
                     // Output
-                    $image_name_modificada = time()."gray-escale".".jpg";
+                    $image_name_modificada = "imagenes/".time()."gray-escale".".jpg";
                     imagejpeg($newImageGd, $image_name_modificada);
-                */
+            
                 ?>
                     </td>
                     <td>
-                        <a href="detalle.php?variable=<?php echo($value["id"]) ?>" target="_blank"><img src= <?php echo($imagenes) ?> > </a>
+                        <a href="detalle.php?variable=<?php echo($value["id"]) ?>" target="_blank"><img src= <?php echo($image_name_modificada) ?> > </a>
 
                     </td>
                 </tr>
                 <?php 
-                
-                $server = "localhost";
-                $user = "root";
-                $pass = "";
-                $db = "juegos";
-
-                $conexion = mysqli_connect($server, $user, $pass,$db) or die("No se pudo conectar con de la base de datos");
-
+             
                 $id = $value["id"];
                 $title = $value["title"];
                 $thumbnail = $value["thumbnail"];
@@ -175,8 +175,8 @@
                 VALUES
                     ('$id', '$title', '$thumbnail', '$description', '$gameUrl', '$genre', '$platform', '$publisher', '$developer', '$releaseDate', '$profileUrl')
                 ");
-
-
+    
+      
                 $resultado = mysqli_query($conexion, "
                     CREATE TABLE generoporcantidad1 AS SELECT genre, COUNT(*) AS cant FROM juegos GROUP BY 1 ORDER BY 2 desc");
                 
@@ -185,8 +185,9 @@
                     SELECT * FROM generoporcantidad1");
 
                     mysqli_fetch_array($result);
-                    mysqli_close($conexion);
-        }
+           }
+           mysqli_close($conexion);
+  
         ?>
         </table>
 
