@@ -5,6 +5,5 @@
 <script>
     let hash = window.location.hash.split('#')[1];
     let elemento = document.getElementById(`${hash}`);
-    elemento.classList.add('estilosBarra'); 
+    elemento.classList.add('estilosBarra');
 </script>
-

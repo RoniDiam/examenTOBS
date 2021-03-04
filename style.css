@@ -9,6 +9,7 @@
 #estilo td, #estilo th {
     border: 1px solid #ddd;
     padding: 8px;
+    text-align: center;
 }
 
 #estilo tr:nth-child(even) {
@@ -153,7 +154,8 @@ body {
     width: 50%;
     float: left;
 }
+
 img {
     height: auto;
     max-width: 100%;
-    }
+}
