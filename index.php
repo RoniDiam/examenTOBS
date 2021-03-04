@@ -5,70 +5,11 @@
         <title>Localhost - conexión a la API de videojuegos </title>
         <meta name="Keywords" content="videojuegos, juegos, videojuegos online, juegos online"/>
         <link rel= "canonical" href="index.php"/>
-
-        
-        <style>
-            #estilo {
-            font-family: Arial, Helvetica, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-            }
-
-            #estilo td, #estilo th {
-            border: 1px solid #ddd;
-            padding: 8px;
-            }
-
-            #estilo tr:nth-child(even){background-color: #f2f2f2;}
-
-            #estilo tr:hover {background-color: #ddd;}
-
-            #estilo th {
-            padding-top: 15px;
-            padding-bottom: 15px;
-            text-align: left;
-            background-color: #4CAF50;
-            color: white;
-            }
-            ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-                background-color: #333;
-            }
-
-            li {
-                float: left;
-                border-right:1px solid #bbb;
-            }
-
-            li:last-child {
-                border-right: none;
-            }
-
-            li a {
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-            }
-
-            li a:hover:not(.estilosBarra) {
-                background-color: #111;
-            }
-
-            .estilosBarra {
-                background-color: #4CAF50;
-            }
-            .gris{
-                filter: grayscale(100%);
-            }
-        </style>
+        <link rel="stylesheet" href="style.css"/>         
     </head>
     <body>
         <?php
+            include_once("header.php");
             $curl = curl_init();
         
             curl_setopt_array($curl, [ 
@@ -84,14 +25,6 @@
 
         ?>
  
-        <ul>
-            <li><a class="estilosBarra" href="#inicio">Inicio</a></li>
-            <li><a href="blog.php">Blog</a></li>
-
-        </ul>
-        
-        <br/>
-        
         <table id="estilo">
                 <thead>
                     <tr>
@@ -111,7 +44,6 @@
                 fclose($in);
                 fclose($out);
             }
-
         
         $server = "localhost";
         $user = "root";
@@ -138,7 +70,7 @@
                     list($width, $height) = getimagesize($image_name);
                     $newWidth = $width *  0.5;
                     $newHeight = $height *  0.5;
-                        
+
                     $newImageGd = imagecreatetruecolor($newWidth, $newHeight);
                     $imageGdFromFile = imagecreatefromjpeg($image_name);
                     imagecopyresampled($newImageGd, $imageGdFromFile, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
@@ -147,7 +79,7 @@
                     // Output
                     $image_name_modificada = "imagenes/".time()."gray-escale".".jpg";
                     imagejpeg($newImageGd, $image_name_modificada);
-            
+                
                 ?>
                     </td>
                     <td>
@@ -176,16 +108,16 @@
                     ('$id', '$title', '$thumbnail', '$description', '$gameUrl', '$genre', '$platform', '$publisher', '$developer', '$releaseDate', '$profileUrl')
                 ");
     
-      
-                $resultado = mysqli_query($conexion, "
-                    CREATE TABLE generoporcantidad1 AS SELECT genre, COUNT(*) AS cant FROM juegos GROUP BY 1 ORDER BY 2 desc");
-                
-
-                    $result = mysqli_query($conexion, "
-                    SELECT * FROM generoporcantidad1");
-
-                    mysqli_fetch_array($result);
            }
+           $resultado = mysqli_query($conexion, "
+           CREATE TABLE generoporcantidad1 AS SELECT genre, COUNT(*) AS cant FROM juegos GROUP BY 1 ORDER BY 2 desc");
+       
+
+           $result = mysqli_query($conexion, "
+           SELECT * FROM generoporcantidad1");
+
+           mysqli_fetch_array($result);
+
            mysqli_close($conexion);
   
         ?>

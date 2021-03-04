@@ -5,114 +5,16 @@
     <title> Blog | videojuegos </title>
     <meta name="Keywords" content="videojuegos, juegos, videojuegos online, juegos online"/>
     <link rel= "canonical" href="blog.php"/>
+    <link rel="stylesheet" href="style.css">  
 
-
-    <style>
-      ul {
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-          background-color: #333;
-      }
-
-      li {
-          float: left;
-          border-right:1px solid #bbb;
-      }
-
-      li:last-child {
-          border-right: none;
-      }
-
-      li a {
-          display: block;
-          color: white;
-          text-align: center;
-          padding: 14px 16px;
-          text-decoration: none;
-      }
-
-      li a:hover:not(.estilosBarra) {
-          background-color: #111;
-      }
-
-      .estilosBarra {
-          background-color: #4CAF50;
-      }
-      * {
-        box-sizing: border-box;
-      }
-
-      /* Add a gray background color with some padding */
-      body {
-        font-family: Arial;
-        padding: 20px;
-        background: #f1f1f1;
-      }
-
-      /* Header/Blog Title */
-      .header {
-        padding: 30px;
-        font-size: 40px;
-        text-align: center;
-        background: white;
-      }
-
-      /* Create two unequal columns that floats next to each other */
-      /* Left column */
-      .leftcolumn {   
-        float: left;
-        width: 75%;
-      }
-
-      /* Right column */
-      .rightcolumn {
-        float: left;
-        width: 25%;
-        padding-left: 20px;
-      }
-
-      /* Fake image */
-      .fakeimg {
-        background-color: #aaa;
-        width: 100%;
-        padding: 20px;
-      }
-
-      /* Add a card effect for articles */
-      .card {
-        background-color: white;
-        padding: 20px;
-        margin-top: 20px;
-      }
-
-      /* Clear floats after the columns */
-      .row:after {
-        content: "";
-        display: table;
-        clear: both;
-      }
-
-      @media screen and (max-width: 800px) {
-        .leftcolumn, .rightcolumn {   
-          width: 100%;
-          padding: 0;
-        }
-      }
-      </style>
   </head>
 
   <body>
 
-    <ul>
-      <li><a href="index.php">Inicio</a></li>
-      <li><a class="estilosBarra" href="blog.php">Blog</a></li>
-    </ul>
-
+    <?php include_once("header.php"); ?>
 
     <div class="header">
-      <h2>Blog</h2>
+      <h1>Blog de juegos</h1>
     </div>
 
     <div class="row">
