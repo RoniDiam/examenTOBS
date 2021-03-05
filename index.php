@@ -53,64 +53,92 @@
 
         $conexion = mysqli_connect($server, $user, $pass, $db) or die("No se pudo conectar con de la base de datos");
 
-        foreach ($juegos as $value) {
-            $cadena = $value['title'];
-            $imagenes = $value['thumbnail'];
-        ?>
-            <tr>
-                <td>
-                    <?php
-                    echo ($cadena);
-                    $image_name = "imagenes/" . time() . "_foto" . ".jpg";
+        $consulta = mysqli_query($conexion, "SELECT * FROM juegos");
+        $arrayConsulta = mysqli_fetch_array($consulta);
 
-                    save_image($imagenes, $image_name);
+     
+        if (!$arrayConsulta) {
 
-                    // Get new dimensions
-                    list($width, $height) = getimagesize($image_name);
-                    $newWidth = $width *  0.5;
-                    $newHeight = $height *  0.5;
+            foreach ($juegos as $value) {
+                $id = $value["id"];
+                $title = $value["title"];
+                $thumbnail = $value["thumbnail"];
+                $description = $value["short_description"];
+                $gameUrl = $value["game_url"];
+                $genre = $value["genre"];
+                $platform = $value["platform"];
+                $publisher = $value["publisher"];
+                $developer = $value["developer"];
+                $releaseDate = $value["release_date"];
+                $profileUrl = $value["freetogame_profile_url"];
 
-                    $newImageGd = imagecreatetruecolor($newWidth, $newHeight);
-                    $imageGdFromFile = imagecreatefromjpeg($image_name);
-                    imagecopyresampled($newImageGd, $imageGdFromFile, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                $imagenes = $value['thumbnail'];
 
-                    imagefilter($newImageGd, IMG_FILTER_GRAYSCALE);
-                    // Output
-                    $image_name_modificada = "imagenes/" . time() . "gray-escale" . ".jpg";
-                    imagejpeg($newImageGd, $image_name_modificada);
-
-                    ?>
-                </td>
-                <td>
-                    <a href="detalle.php?id=<?php echo ($value["id"]) ?>" target="_blank"><img src=<?php echo ($image_name_modificada) ?>> </a>
-                </td>
-            </tr>
-        <?php
-
-            $id = $value["id"];
-            $title = $value["title"];
-            $thumbnail = $value["thumbnail"];
-            $description = $value["short_description"];
-            $gameUrl = $value["game_url"];
-            $genre = $value["genre"];
-            $platform = $value["platform"];
-            $publisher = $value["publisher"];
-            $developer = $value["developer"];
-            $releaseDate = $value["release_date"];
-            $profileUrl = $value["freetogame_profile_url"];
-
-            $sql = mysqli_query($conexion, "
+                $sql = mysqli_query($conexion, "
                 INSERT INTO juegos
                     (id, nombre, thumbnail, descripcion, urlJuego, genre, plataforma, publisher, developer, fechaLanzamiento, urlPerfil) 
                 VALUES
                     ('$id', '$title', '$thumbnail', '$description', '$gameUrl', '$genre', '$platform', '$publisher', '$developer', '$releaseDate', '$profileUrl')
                 ");
-        }
 
+                $image_name = "imagenes/" . $id . "_foto" . ".jpg";
+                save_image($imagenes, $image_name);
+
+                list($width, $height) = getimagesize($image_name);
+                $newWidth = $width *  0.5;
+                $newHeight = $height *  0.5;
+
+                $newImageGd = imagecreatetruecolor($newWidth, $newHeight);
+                $imageGdFromFile = imagecreatefromjpeg($image_name);
+                imagecopyresampled($newImageGd, $imageGdFromFile, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+                imagefilter($newImageGd, IMG_FILTER_GRAYSCALE);
+                $image_name_modificada = "imagenes/" . $id . "gray-escale" . ".jpg";
+                imagejpeg($newImageGd, $image_name_modificada);
+                ?>
+                
+                <tr>
+                    <td>    
+                        <?php
+                            echo ($title);
+                        ?> 
+                    </td> 
+                    <td>
+                        <?php
+                            $image_name_modificada = "imagenes/" . $id . "gray-escale" . ".jpg";
+                        ?> 
+                        <a href="detalle.php?id=<?php echo ($value["id"]) ?>" target="_blank"><img src=<?php echo ($image_name_modificada) ?>> </a>
+                    </td>
+                </tr>
+                <?php
+            }
+        } else {
+            // no esta vacia. TIENE CONTENIDO
+            foreach ($juegos as $value) {
+                $id = $value["id"];
+                $cadena = $value['title'];
+                $imagenes = $value['thumbnail'];
+                ?>
+
+                <tr>
+                    <td>    
+                        <?php
+                            echo ($cadena);
+                        ?> 
+                    </td> 
+                    <td>
+                        <?php
+                            $image_name_modificada = "imagenes/" . $id . "gray-escale" . ".jpg";
+                        ?> 
+                        <a href="detalle.php?id=<?php echo ($value["id"]) ?>" target="_blank"><img src=<?php echo ($image_name_modificada) ?>> </a>
+                    </td>
+                </tr>
+                <?php
+            }
+        }
 
         $resultado = mysqli_query($conexion, "
            CREATE TABLE generoporcantidad1 AS SELECT genre, COUNT(*) AS cant FROM juegos GROUP BY 1 ORDER BY 2 desc");
-
 
         $result = mysqli_query($conexion, "
            SELECT * FROM generoporcantidad1");
